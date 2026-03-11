@@ -1,7 +1,9 @@
 import { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import Dashboard from "./pages/Lab1";
 
 function App() {
+  
   return (
     <>
       <nav className="bg-blue-600 text-white shadow">
@@ -11,8 +13,8 @@ function App() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="#" className="hover:text-gray-200">
-              Trang chủ
+            <Link to="/dashboard" className="hover:text-gray-200">
+              Dashboard
             </Link>
             <Link to="/list" className="hover:text-gray-200">
               Danh sách
@@ -30,9 +32,9 @@ function App() {
               Đăng ký
             </Link>
           </div>
-        </div>
+        </div>  
       </nav>
-
+      <Dashboard />
       {/* MAIN CONTENT */}
       <div className="max-w-6xl mx-auto mt-10 px-4 text-center">
         <h1 className="text-4xl font-bold mb-4">Chào mừng đến với WEB2091</h1>
