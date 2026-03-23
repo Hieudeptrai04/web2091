@@ -1,4 +1,68 @@
 {
-  "products": [],
+  "stories": [
+    {
+      "createdAt": "2026/1/16",
+      "id": 1,
+      "title": "Naruto",
+      "author": "Masashi Kishimoto",
+      "image": "https://image.com/naruto.jpg",
+      "description": "Truyện ninja nổi tiếng"
+    },
+    {
+      "createdAt": "2026/1/18",
+      "title": "đasa",
+      "author": "đasadsa",
+      "image": "ádsad",
+      "description": "ádsadsad",
+      "id": 2
+    },
+    {
+      "createdAt": "2026/3/16",
+      "title": "dfdsfsdf",
+      "author": "dsfsdf",
+      "image": "dfsdfsd",
+      "description": "fsdfsdfsd",
+      "id": 4
+    },
+    {
+      "createdAt": "2026/3/18",
+      "title": "nguyễn văn hiếu",
+      "author": "sdasdsad",
+      "image": "https://media-cdn-v2.laodong.vn/storage/newsportal/2023/8/26/1233821/Giai-Nhi-1--Nang-Tre.jpg",
+      "description": "dfsdfsdfdsfs",
+      "id": 5
+    },
+    {
+      "title": "dfdf",
+      "author": "dsfdsf",
+      "image": "dsfdsf",
+      "description": "dsfdsf",
+      "categoryId": 2,
+      "id": 8
+    },
+    {
+      "title": "Hiếu nguywwnx",
+      "author": "Hieu123",
+      "image": "https://mia.vn/media/uploads/tin-tuc/top-10-mau-cap-hoc-sinh-cap-1-voi-da-dang-mau-sac-va-thiet-ke-ngo-nghinh-03-1679649479.jpeg",
+      "description": "dsasdas",
+      "categoryId": 2,
+      "createdAt": "13/02/2026",
+      "id": 9
+    }
+  ],
+  "categories": [
+    {
+      "title": "c cvc",
+      "description": "xvcxvcx",
+      "active": true,
+      "id": 1
+    },
+    {
+      "title": "truyện naruto",
+      "description": "cxvcxvcxvxc",
+      "active": true,
+      "id": 2
+    }
+  ],
   "users": []
 }
