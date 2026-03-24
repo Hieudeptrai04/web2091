@@ -1,68 +1,49 @@
 {
   "stories": [
     {
-      "createdAt": "2026/1/16",
+      "title": "Chuyện Ma",
+      "author": "Nguyễn Văn Duy  ngu qau",
+      "image": "https://truyenaudio.org/upload/pro/Hon-Nhap-Xac-Truyen-ma-kinh-di.jpg?quality=100&mode=crop&anchor=topleft&width=450&height=675",
       "id": 1,
-      "title": "Naruto",
-      "author": "Masashi Kishimoto",
-      "image": "https://image.com/naruto.jpg",
-      "description": "Truyện ninja nổi tiếng"
+      "createdAt": "2026-03-19T17:00:00.000Z"
     },
     {
-      "createdAt": "2026/1/18",
-      "title": "đasa",
-      "author": "đasadsa",
-      "image": "ádsad",
-      "description": "ádsadsad",
-      "id": 2
-    },
-    {
-      "createdAt": "2026/3/16",
-      "title": "dfdsfsdf",
-      "author": "dsfsdf",
-      "image": "dfsdfsd",
-      "description": "fsdfsdfsd",
-      "id": 4
-    },
-    {
-      "createdAt": "2026/3/18",
-      "title": "nguyễn văn hiếu",
-      "author": "sdasdsad",
-      "image": "https://media-cdn-v2.laodong.vn/storage/newsportal/2023/8/26/1233821/Giai-Nhi-1--Nang-Tre.jpg",
-      "description": "dfsdfsdfdsfs",
-      "id": 5
-    },
-    {
-      "title": "dfdf",
-      "author": "dsfdsf",
-      "image": "dsfdsf",
-      "description": "dsfdsf",
+      "title": "chuyện hay",
+      "author": "Nguyễn Văn A",
+      "image": "https://thuthuatnhanh.com/wp-content/uploads/2022/06/hinh-anh-la-vang-roi-dep-nhat.jpg",
       "categoryId": 2,
-      "id": 8
-    },
-    {
-      "title": "Hiếu nguywwnx",
-      "author": "Hieu123",
-      "image": "https://mia.vn/media/uploads/tin-tuc/top-10-mau-cap-hoc-sinh-cap-1-voi-da-dang-mau-sac-va-thiet-ke-ngo-nghinh-03-1679649479.jpeg",
-      "description": "dsasdas",
-      "categoryId": 2,
-      "createdAt": "13/02/2026",
+      "createdAt": "2026-03-16T17:00:00.000Z",
       "id": 9
+    },
+    {
+      "title": "chuyện trẻ con",
+      "author": "Nguyễn Văn A",
+      "image": "https://cdn.hoanghamobile.vn/i/previewV2/Uploads/2024/11/06/loq-15arp9-83jc003yvn-1.png",
+      "categoryId": 2,
+      "createdAt": "2026-03-16T17:00:00.000Z",
+      "id": 10
     }
   ],
   "categories": [
     {
-      "title": "c cvc",
-      "description": "xvcxvcx",
+      "title": "tuyện mới",
+      "description": "rất là hayy",
       "active": true,
       "id": 1
     },
     {
-      "title": "truyện naruto",
-      "description": "cxvcxvcxvxc",
+      "title": "chuyện hay",
+      "description": "rất là hayy",
       "active": true,
       "id": 2
+    },
+    {
+      "title": "rất hay",
+      "description": "hhhhhhhhhhhhhhhhhh",
+      "active": true,
+      "id": 3
     }
   ],
+  "products": [],
   "users": []
 }

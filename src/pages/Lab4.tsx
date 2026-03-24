@@ -1,183 +1,209 @@
-import { Button, Checkbox, Form, Input, Select } from "antd";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Button, Form, Input, Checkbox, Select,DatePicker } from "antd";
 import axios from "axios";
 import toast from "react-hot-toast";
-
-interface CategoryFormData {
-  title: string;
-  description?: string;
-  active: boolean;
-}
-
-interface Category extends CategoryFormData {
-  id: number;
-}
 
 interface Story {
   title: string;
   author?: string;
+  active?: boolean;
   image?: string;
-  description?: string;
   categoryId?: number;
   createdAt?: string;
 }
 
-const getCurrentDate = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
+interface Category {
+  id: number;
+  title: string;
+}
 
-  return `${year}-${month}-${day}`;
-};
-
-const Lab4 = () => {
-  const [categoryForm] = Form.useForm<CategoryFormData>();
-  const [storyForm] = Form.useForm<Story>();
-
-  const { data: categories = [], isLoading: isLoadingCategories, refetch } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const res = await axios.get("http://localhost:3000/categories");
-      return res.data as Category[];
-    },
-  });
-
-  const categoryMutation = useMutation({
-    mutationFn: async (data: CategoryFormData) => {
-      const res = await axios.post("http://localhost:3000/categories", data);
-      return res.data;
-    },
-    onSuccess: () => {
-      toast.success("Them danh muc thanh cong");
-      categoryForm.resetFields();
-      refetch();
+function Bai1() {
+  const { mutate, isPending, isSuccess } = useMutation({
+    mutationFn: async (values: any) => {
+      await axios.post("http://localhost:3000/categories", values);
     },
     onError: () => {
-      toast.error("Co loi xay ra");
-    },
-  });
-
-  const storyMutation = useMutation({
-    mutationFn: async (data: Story) => {
-      const storyPayload = {
-        ...data,
-        createdAt: getCurrentDate(),
-      };
-      const res = await axios.post("http://localhost:3000/stories", storyPayload);
-      return res.data;
+      toast.error("Có lỗi xảy ra rồi anh yêu");
     },
     onSuccess: () => {
-      toast.success("Them truyen thanh cong");
-      storyForm.resetFields();
-    },
-    onError: () => {
-      toast.error("Co loi xay ra");
+      toast.success("Thêm thành công rùi anh yêu");
     },
   });
 
-  const onCategoryFinish = (values: CategoryFormData) => {
-    categoryMutation.mutate(values);
-  };
-
-  const onStoryFinish = (values: Story) => {
-    storyMutation.mutate(values);
+  const onFinish = (values: any) => {
+    mutate(values);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
-        <div className="rounded-lg bg-white p-8 shadow-lg">
-          <h2 className="mb-6 text-center text-2xl font-bold">Them danh muc truyen</h2>
+    <Form layout="vertical" onFinish={onFinish} style={{ maxWidth: 500 }}>
+      <Form.Item
+        label="Title"
+        name="title"
+        rules={[{ required: true, message: "Nhập Title" }]}
+      >
+        <Input />
+      </Form.Item>
 
-          <Form
-            form={categoryForm}
-            layout="vertical"
-            initialValues={{ active: false }}
-            onFinish={onCategoryFinish}
-          >
-            <Form.Item
-              label="Title"
-              name="title"
-              rules={[{ required: true, message: "Vui long nhap title" }]}
-            >
-              <Input placeholder="Nhap ten danh muc" />
-            </Form.Item>
+      <Form.Item label="Description" name="description">
+        <Input.TextArea rows={4} />
+      </Form.Item>
 
-            <Form.Item label="Description" name="description">
-              <Input.TextArea rows={4} placeholder="Nhap mo ta danh muc" />
-            </Form.Item>
+      <Form.Item name="active" valuePropName="checked">
+        <Checkbox>Active</Checkbox>
+      </Form.Item>
 
-            <Form.Item name="active" valuePropName="checked">
-              <Checkbox>Active</Checkbox>
-            </Form.Item>
+      <Button type="primary" htmlType="submit" loading={isPending}>
+        Submit
+      </Button>
 
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={categoryMutation.isPending}
-              block
-            >
-              {categoryMutation.isPending ? "Dang them..." : "Them danh muc"}
-            </Button>
+      {isSuccess && <p style={{ color: "green" }}>Thêm thành công</p>}
+    </Form>
+  );
+}
 
-            {categoryMutation.isPending && (
-              <p className="mt-3 text-center text-sm text-blue-600">Dang them danh muc...</p>
-            )}
-          </Form>
-        </div>
+function Bai2() {
+  const { mutate, isPending, isSuccess } = useMutation({
+    mutationFn: async (values: Story) => {
+      await axios.post("http://localhost:3000/categories", values);
+    },
+    onError: () => {
+      toast.error("Có lỗi xảy ra rồi anh yêu");
+    },
+    onSuccess: () => {
+      toast.success("Thêm thành công rùi anh yêu");
+    },
+  });
 
-        <div className="rounded-lg bg-white p-8 shadow-lg">
-          <h2 className="mb-6 text-center text-2xl font-bold">Them truyen moi</h2>
+  const onFinish = (values: Story) => {
+    mutate(values);
+  };
 
-          <Form form={storyForm} layout="vertical" onFinish={onStoryFinish}>
-            <Form.Item
-              label="Title"
-              name="title"
-              rules={[{ required: true, message: "Vui long nhap ten truyen" }]}
-            >
-              <Input placeholder="Nhap ten truyen" />
-            </Form.Item>
+  return (
+    <Form layout="vertical" onFinish={onFinish} style={{ maxWidth: 500 }}>
+      <Form.Item
+        label="Title"
+        name="title"
+        rules={[{ required: true, message: "Nhập Title" }]}
+      >
+        <Input />
+      </Form.Item>
 
-            <Form.Item label="Author" name="author">
-              <Input placeholder="Nhap ten tac gia" />
-            </Form.Item>
+      <Form.Item label="Description" name="description">
+        <Input.TextArea rows={4} />
+      </Form.Item>
 
-            <Form.Item label="Image" name="image">
-              <Input placeholder="Nhap URL hinh anh" />
-            </Form.Item>
+      <Form.Item name="active" valuePropName="checked">
+        <Checkbox>Active</Checkbox>
+      </Form.Item>
 
-            <Form.Item label="Description" name="description">
-              <Input.TextArea rows={4} placeholder="Nhap mo ta truyen" />
-            </Form.Item>
+      <Button type="primary" htmlType="submit" loading={isPending}>
+        Submit
+      </Button>
 
-            <Form.Item label="Danh muc" name="categoryId">
-              <Select
-                placeholder="Chon danh muc"
-                loading={isLoadingCategories}
-                options={categories.map((category) => ({
-                  label: category.title,
-                  value: category.id,
-                }))}
-              />
-            </Form.Item>
+      {isSuccess && <p style={{ color: "green" }}>Thêm thành công</p>}
+    </Form>
+  );
+}
 
-            <p className="mb-4 text-sm text-gray-500">
-              Ngay tao se duoc them tu dong khi ban luu truyen.
-            </p>
+function Bai4() {
+  const qc = useQueryClient();
 
-            <Button type="primary" htmlType="submit" loading={storyMutation.isPending} block>
-              {storyMutation.isPending ? "Dang them..." : "Them truyen"}
-            </Button>
+  const { data } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await axios.get("http://localhost:3000/categories");
+      return res.data;
+    },
+  });
 
-            {storyMutation.isPending && (
-              <p className="mt-3 text-center text-sm text-blue-600">Dang them truyen...</p>
-            )}
-          </Form>
-        </div>
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: Story) => {
+      await axios.post("http://localhost:3000/stories", values);
+    },
+    onSuccess: () => {
+      toast.success("Thêm truyện thành công yêu ơi");
+      qc.invalidateQueries({ queryKey: ["getAllStories"] });
+    },
+    onError: () => {
+      toast.error("lỗi thật rồi");
+    },
+  });
+
+  const onFinish = (values: any) => {
+    mutate({
+      ...values,
+      createdAt: values.createdAt
+        ? values.createdAt.toISOString()
+        : new Date().toISOString(),
+    });
+  };
+
+  return (
+    <Form layout="vertical" onFinish={onFinish} style={{ maxWidth: 500 }}>
+      <Form.Item
+        label="Tên truyện"
+        name="title"
+        rules={[{ required: true, message: "Nhập tên truyện" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Tác giả"
+        name="author"
+        rules={[{ required: true, message: "Nhập tác giả" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item label="Link ảnh" name="image">
+        <Input placeholder="Nhập URL ảnh" />
+      </Form.Item>
+
+      <Form.Item label="Danh mục" name="categoryId">
+        <Select
+          placeholder="Chọn danh mục"
+          options={data?.map((item: Category) => ({
+            value: item.id,
+            label: item.title,
+          }))}
+        />
+      </Form.Item>
+
+      <Form.Item
+        label="Ngày thêm"
+        name="createdAt"
+        rules={[{ required: true, message: "Chọn ngày" }]}
+      >
+        <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+      </Form.Item>
+
+      <Button type="primary" htmlType="submit" loading={isPending}>
+        Thêm truyện
+      </Button>
+    </Form>
+  );
+}
+
+function Lab4() {
+  return (
+    <div className="space-y-10">
+      <div>
+        <h1 className="text-left font-bold">Bài 1</h1>
+        <Bai1 />
+      </div>
+
+      <div>
+        <h1 className="text-left font-bold">Bài 2</h1>
+        <Bai2 />
+      </div>
+
+      <div>
+        <h1 className="text-left font-bold">Bài 4</h1>
+        <Bai4 />
       </div>
     </div>
   );
-};
+}
 
 export default Lab4;

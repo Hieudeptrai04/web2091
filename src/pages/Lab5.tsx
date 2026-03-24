@@ -1,157 +1,120 @@
-import { Button, Image, Popconfirm, Space, Spin, Table, Typography } from "antd";
-import type { TableProps } from "antd";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Image, Table, Button, Popconfirm, Input } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import toast from "react-hot-toast";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-dayjs.extend(customParseFormat);
+function Bai1() {
+  const qc = useQueryClient();
+  const [keyword, setKeyword] = useState("");
 
-interface Story {
-  id: number;
-  title: string;
-  author?: string;
-  image?: string;
-  description?: string;
-  createdAt?: string;
-}
-
-const STORY_DATE_FORMATS = ["YYYY-MM-DD", "YYYY/M/D", "DD/MM/YYYY"];
-
-const formatStoryDate = (value?: string) => {
-  if (!value) {
-    return "-";
-  }
-
-  const strictDate = dayjs(value, STORY_DATE_FORMATS, true);
-  if (strictDate.isValid()) {
-    return strictDate.format("DD/MM/YYYY");
-  }
-
-  const fallbackDate = dayjs(value);
-  return fallbackDate.isValid() ? fallbackDate.format("DD/MM/YYYY") : value;
-};
-
-export default function StoryList() {
-  const queryClient = useQueryClient();
-
-  const { data = [], isLoading, isError } = useQuery<Story[]>({
-    queryKey: ["stories"],
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["getAllStories"],
     queryFn: async () => {
       const res = await axios.get("http://localhost:3000/stories");
       return res.data;
     },
   });
 
-  const deleteStoryMutation = useMutation({
+  const { mutate } = useMutation({
     mutationFn: async (id: number) => {
       await axios.delete(`http://localhost:3000/stories/${id}`);
     },
-    onSuccess: async () => {
-      toast.success("Xoa truyen thanh cong");
-      await queryClient.invalidateQueries({ queryKey: ["stories"] });
-    },
-    onError: () => {
-      toast.error("Xoa truyen that bai");
+    onSuccess: () => {
+      toast.success("Xóa truyện thành công");
+      qc.invalidateQueries({ queryKey: ["getAllStories"] });
     },
   });
 
-  const columns: TableProps<Story>["columns"] = [
+  const filteredData = data?.filter((item: any) =>
+    item.title?.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      width: 80,
-    },
-    {
-      title: "Anh",
-      dataIndex: "image",
-      render: (url?: string) =>
-        url ? <Image src={url} width={60} alt="Story cover" /> : <span>-</span>,
-      width: 100,
-    },
-    {
-      title: "Ten truyen",
+      title: "Tên truyện",
       dataIndex: "title",
     },
     {
-      title: "Tac gia",
+      title: "Tác giả",
       dataIndex: "author",
-      render: (author?: string) => author || "-",
     },
     {
-      title: "Mo ta",
-      dataIndex: "description",
-      render: (description?: string) => description || "-",
+      title: "Hình ảnh",
+      dataIndex: "image",
+      render: (src: string) => <Image src={src} height={100} />,
     },
     {
-      title: "Ngay tao",
+      title: "Ngày thêm",
       dataIndex: "createdAt",
-      render: (date?: string) => formatStoryDate(date),
-      width: 140,
+      render: (date: string) => {
+        if (!date) return "";
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, "0");
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
     },
     {
-      title: "Thao tac",
-      key: "actions",
-      width: 180,
-      render: (_: unknown, record: Story) => (
-        <Space>
-          <Link to={`/edit/${record.id}`}>
-            <Button type="primary">Sua</Button>
-          </Link>
+      title: "Action",
+      render: (_: any, record: any) => (
+        <>
+      <Popconfirm
+        title="Xóa truyện"
+        description="Bạn có muốn xóa không"
+        okText="Có"
+        cancelText="Không"
+        onConfirm={() => mutate(record.id)}
+      >
+        <Button danger style={{ marginRight: 8 }}>
+          Delete
+        </Button>
+      </Popconfirm>
 
-          <Popconfirm
-            title="Ban chac chan muon xoa truyen nay?"
-            okText="Xoa"
-            cancelText="Huy"
-            onConfirm={() => deleteStoryMutation.mutate(record.id)}
-          >
-            <Button
-              danger
-              loading={
-                deleteStoryMutation.isPending &&
-                deleteStoryMutation.variables === record.id
-              }
-            >
-              Xoa
-            </Button>
-          </Popconfirm>
-        </Space>
+      <Link to={`/lab6/${record.id}`}>
+        <Button type="primary">Sửa</Button>
+      </Link>
+    </>
       ),
     },
   ];
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-12">
-        <Spin size="large" />
-      </div>
-    );
-  }
-
   if (isError) {
-    return <p>Loi khi tai du lieu truyen.</p>;
+    return <div>Có lỗi xảy ra</div>;
   }
 
   return (
-    <section className="rounded-xl bg-white p-5 shadow-sm">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <Typography.Title level={3} style={{ margin: 0 }}>
-          Danh sach truyen
-        </Typography.Title>
-
-        <Link to="/add">
-          <Button type="primary">Them truyen</Button>
-        </Link>
-      </div>
-
-      <Table<Story>
-        rowKey="id"
-        columns={columns}
-        dataSource={data}
-        pagination={{ pageSize: 5 }}
+    <>
+      <Input
+        placeholder="Tìm theo tên truyện..."
+        style={{ marginBottom: 16, width: 300 }}
+        onChange={(e) => setKeyword(e.target.value)}
       />
-    </section>
+
+      <Table
+        columns={columns}
+        dataSource={filteredData}
+        loading={isLoading}
+        rowKey="id"
+        pagination={{
+          pageSize: 5,
+        }}
+      />
+    </>
   );
 }
+
+function Lab5() {
+  return (
+    <div className="space-y-10">
+      <div>
+        <h1 className="text-left font-bold">Bài 1</h1>
+        <Bai1 />
+      </div>
+    </div>
+  );
+}
+
+export default Lab5;
