@@ -151,14 +151,14 @@ function Bai3() {
       key: 1,
       id: 1,
       name: "iPhone 17",
-      email: "tranphuhuong1802@gmail.com",
+      email: "hieunv@example.com",
       status: "active",
     },
     {
       key: 2,
       id: 2,
       name: "iPhone 17 Pro Max",
-      email: "tranphuhuong1802@gmail.com",
+      email: "hieunv@example.com",
       status: "inactive",
     },
   ];

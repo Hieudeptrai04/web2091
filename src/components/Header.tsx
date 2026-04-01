@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
-import { useContext } from "react";
 import { Button } from "antd";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
+import { UserContext } from "../context/UserContext";
 
 export default function Navbar() {
   const context = useContext(UserContext);
@@ -10,8 +10,8 @@ export default function Navbar() {
   const { user, setUser } = context;
 
   const themeContext = useContext(ThemeContext);
-  if(!themeContext) return null;
-  const {theme, toggleTheme} = themeContext;
+  if (!themeContext) return null;
+  const { theme, toggleTheme } = themeContext;
 
   return (
     <nav className="bg-blue-600 text-white shadow">
@@ -22,30 +22,36 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center space-x-8">
           <Link to="#" className="hover:text-gray-200">
-            Trang chủ
+            Trang chu
           </Link>
           <Link to="/list" className="hover:text-gray-200">
-            Danh sách
+            Danh sach
           </Link>
           <Link to="/add" className="hover:text-gray-200">
-            Thêm mới
+            Them moi
           </Link>
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-            {user && (<img src={user.avatar} className="w-8 h-8 rounded-full object-cover"/>)}
-            {user?.name || "Guest"}
-          <Button onClick={() => setUser({avatar:'https://upload.wikimedia.org/wikipedia/vi/3/39/First_dragon_ball_shounen_jump.jpg',name: 'huongtp62'})}>Login</Button>
-          <Button onClick={()=>setUser(null)}>Logout</Button>
-          <Button onClick={toggleTheme}>
-            {theme === "light" ? "☼" : "☽"}
+          {user && (
+            <img
+              src={user.avatar}
+              alt={`${user.name} avatar`}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+          )}
+          {user?.name || "Guest"}
+          <Button
+            onClick={() =>
+              setUser({ avatar: "/hieunv-avatar.svg", name: "hieunv" })
+            }
+          >
+            Login
           </Button>
-          {/* <Link to="#" className="hover:text-gray-200">
-            Đăng nhập
-          </Link>
-          <Link to="#" className="hover:text-gray-200">
-            Đăng ký
-          </Link> */}
+          <Button onClick={() => setUser(null)}>Logout</Button>
+          <Button onClick={toggleTheme}>
+            {theme === "light" ? "Sun" : "Moon"}
+          </Button>
         </div>
       </div>
     </nav>
