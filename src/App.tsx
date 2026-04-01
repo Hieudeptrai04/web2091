@@ -8,6 +8,8 @@ import Lab3 from "./pages/lab3";
 import Lab4 from "./pages/lab4";
 import Lab5 from "./pages/lab5";
 import Lab6 from "./pages/lab6";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Navbar from "./components/Header";
 import {theme as antdTheme } from "antd";
 import { ThemeContext } from "./context/ThemeContext";
@@ -85,12 +87,15 @@ function App() {
         </Layout> */}
 
         <Routes>
+          <Route path="/" element={<Lab1/>}></Route>
           <Route path="/lab1" element={<Lab1/>}></Route>
           <Route path="/lab2" element={<Lab2/>}></Route>
           <Route path="/lab3" element={<Lab3/>}></Route>
           <Route path="/lab4" element={<Lab4/>}></Route>
           <Route path="/lab5" element={<Lab5/>}></Route>
           <Route path="/lab6/:id" element={<Lab6 />} />
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
         </Routes>
       </div>
 

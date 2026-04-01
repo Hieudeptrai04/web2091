@@ -45,5 +45,30 @@
     }
   ],
   "products": [],
-  "users": []
+  "users": [
+    {
+      "email": "hn3312482@gmail.com",
+      "password": "$2a$10$5FKznusiVKzKxpBkqQdcdu1DWOnKhUmJCAN8L5bVpdd8bk.5feypG",
+      "username": "hieunguyen1819",
+      "id": 1
+    },
+    {
+      "email": "hieumon482@gmail.com",
+      "password": "$2a$10$jqxJxvMH7gqmxFoelHNk6epbBrzpYe4cgl5pAG0AXVQfbBsZMBBzO",
+      "username": "hieunguyen18199",
+      "id": 2
+    },
+    {
+      "email": "hieu@gmail.com",
+      "password": "$2a$10$/3b1.HHO56pnbyPZrMcqnuzNv8vnkWgYcGKpYylK.ao5GduOi9J7e",
+      "username": "hieunguyen18199",
+      "id": 3
+    },
+    {
+      "email": "hn3312482s@gmail.com",
+      "password": "$2a$10$V0gI01.s9OwPgOaQF3ZKZ.e50bvZC1wlfrwuECN0wBi1aZeYr7cH6",
+      "username": "hieunguyen181998",
+      "id": 4
+    }
+  ]
 }

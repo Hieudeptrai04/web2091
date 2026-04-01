@@ -2,16 +2,20 @@ import { Button } from "antd";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
-import { UserContext } from "../context/UserContext";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function Navbar() {
-  const context = useContext(UserContext);
-  if (!context) return null;
-  const { user, setUser } = context;
-
   const themeContext = useContext(ThemeContext);
   if (!themeContext) return null;
   const { theme, toggleTheme } = themeContext;
+  const { user, logout } = useAuthStore();
+  const isLoggedIn = Boolean(user);
+  const emailLabel = isLoggedIn
+    ? `Email: ${user?.email ?? ""}`
+    : "Email: Ch\u01b0a \u0111\u0103ng nh\u1eadp";
+  const statusLabel = isLoggedIn
+    ? "\u0110\u00e3 \u0111\u0103ng nh\u1eadp"
+    : "Kh\u00e1ch";
 
   return (
     <nav className="bg-blue-600 text-white shadow">
@@ -33,22 +37,20 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          {user && (
-            <img
-              src={user.avatar}
-              alt={`${user.name} avatar`}
-              className="w-8 h-8 rounded-full object-cover"
-            />
+          <span>{emailLabel}</span>
+          <span>{statusLabel}</span>
+          {isLoggedIn ? (
+            <Button onClick={logout}>Logout</Button>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button>Login</Button>
+              </Link>
+              <Link to="/register">
+                <Button type="primary">Register</Button>
+              </Link>
+            </>
           )}
-          {user?.name || "Guest"}
-          <Button
-            onClick={() =>
-              setUser({ avatar: "/hieunv-avatar.svg", name: "hieunv" })
-            }
-          >
-            Login
-          </Button>
-          <Button onClick={() => setUser(null)}>Logout</Button>
           <Button onClick={toggleTheme}>
             {theme === "light" ? "Sun" : "Moon"}
           </Button>
