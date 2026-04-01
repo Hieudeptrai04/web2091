@@ -73,7 +73,7 @@ function Bai1() {
         </Button>
       </Popconfirm>
 
-      <Link to={`/lab6/${record.id}`}>
+      <Link to={`/lab6/${record.id}`}>  
         <Button type="primary">Sửa</Button>
       </Link>
     </>
